@@ -2,7 +2,7 @@
 
 void EnchantingPatch::Install()
 {
-    REL::Relocation<std::uintptr_t> hookPoint{ RELOCATION_ID(51379, 51379), 0x23A };
+    REL::Relocation<std::uintptr_t> hookPoint{ RELOCATION_ID(50487, 51379), 0x23A };
     auto& trampoline = SKSE::GetTrampoline();
     _PostMessage = trampoline.write_call<5>(hookPoint.address(), PostMessage_);
 
