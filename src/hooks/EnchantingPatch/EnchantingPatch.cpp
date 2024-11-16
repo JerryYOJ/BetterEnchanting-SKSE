@@ -2,7 +2,9 @@
 
 void EnchantingPatch::Install()
 {
-    REL::Relocation<std::uintptr_t> hookPoint{ RELOCATION_ID(50487, 51379), 0x23A };
+    int offset = 0x23A;
+    if (REL::Module::GetRuntime() == REL::Module::Runtime::SE) offset = 0x1F8;
+    REL::Relocation<std::uintptr_t> hookPoint{ RELOCATION_ID(50487, 51379), offset };
     auto& trampoline = SKSE::GetTrampoline();
     _PostMessage = trampoline.write_call<5>(hookPoint.address(), PostMessage_);
 
@@ -15,10 +17,9 @@ void EnchantingPatch::PostMessage_(RE::MessageBoxData* data)
 
     RE::BSTArray<RE::BSTSmartPointer<RE::CraftingSubMenus::EnchantConstructMenu::EnchantmentEntry>> savedEffects = menu->selected.effects;
 
-    RE::CraftingSubMenus::EnchantConstructMenu::ItemChangeEntry* soulmem = nullptr;
+    RE::BSTSmartPointer<RE::CraftingSubMenus::EnchantConstructMenu::ItemChangeEntry>soulmem;
     if (menu->selected.soulGem->data->countDelta > 1) {
-        soulmem = menu->selected.soulGem.get();
-        soulmem->IncRef();
+        soulmem = menu->selected.soulGem;
     }
 
     data->callback->Run(RE::IMessageBoxCallback::Message::kUnk0);
