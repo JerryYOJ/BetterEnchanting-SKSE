@@ -17,11 +17,9 @@ void EnchantingPatch::PostMessage_(RE::MessageBoxData* data)
 
     RE::BSTArray<RE::BSTSmartPointer<RE::CraftingSubMenus::EnchantConstructMenu::EnchantmentEntry>> savedEffects = menu->selected.effects;
 
-    RE::BSTSmartPointer<RE::CraftingSubMenus::EnchantConstructMenu::ItemChangeEntry>soulmem;
-    auto&& playerInv = RE::PlayerCharacter::GetSingleton()->GetInventory();
-    auto&& count = playerInv[menu->selected.soulGem->data->GetObject()].first;
-    if (count > 1) {
-        soulmem = menu->selected.soulGem;
+    RE::TESBoundObject* soulGemObj = nullptr;
+    if (menu->selected.soulGem->data->countDelta > 1) {
+        soulGemObj = menu->selected.soulGem->data->GetObject();
     }
 
     data->callback->Run(RE::IMessageBoxCallback::Message::kUnk0);
@@ -30,12 +28,11 @@ void EnchantingPatch::PostMessage_(RE::MessageBoxData* data)
         eff->selected = true;
     }
 
-    if (soulmem) {
-        soulmem->selected = true;
-    }
-
     menu->selected.effects = savedEffects;
-    menu->selected.soulGem = RE::BSTSmartPointer<RE::CraftingSubMenus::EnchantConstructMenu::ItemChangeEntry>(soulmem);
+    for (auto&& it : menu->listEntries) {
+        if (it && it->filterFlag.all(RE::CraftingSubMenus::EnchantConstructMenu::FilterFlag::SoulGem) && (*(RE::BSTSmartPointer<RE::CraftingSubMenus::EnchantConstructMenu::ItemChangeEntry>*) & it)->data->GetObject() == soulGemObj)
+            menu->selected.soulGem = *(RE::BSTSmartPointer<RE::CraftingSubMenus::EnchantConstructMenu::ItemChangeEntry>*)&it;
+    }
 
     return;
 }
