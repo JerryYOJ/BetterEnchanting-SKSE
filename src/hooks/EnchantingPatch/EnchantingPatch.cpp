@@ -18,7 +18,9 @@ void EnchantingPatch::PostMessage_(RE::MessageBoxData* data)
     RE::BSTArray<RE::BSTSmartPointer<RE::CraftingSubMenus::EnchantConstructMenu::EnchantmentEntry>> savedEffects = menu->selected.effects;
 
     RE::BSTSmartPointer<RE::CraftingSubMenus::EnchantConstructMenu::ItemChangeEntry>soulmem;
-    if (menu->selected.soulGem->data->countDelta > 1) {
+    auto&& playerInv = RE::PlayerCharacter::GetSingleton()->GetInventory();
+    auto&& count = playerInv[menu->selected.soulGem->data->GetObject()].first;
+    if (count > 1) {
         soulmem = menu->selected.soulGem;
     }
 
