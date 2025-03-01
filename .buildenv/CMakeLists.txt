@@ -37,7 +37,7 @@ if(DEFINED ENV{SKYRIM_MODS_FOLDER} AND IS_DIRECTORY "$ENV{SKYRIM_MODS_FOLDER}")
 endif()
 
 # Otherwise, you can set OUTPUT_FOLDER to any place you'd like :)
-set(OUTPUT_FOLDER "C:/Users/Administrator/AppData/Local/ModOrganizer/Skyrim Special Edition/mods/BetterEnchanting")
+set(OUTPUT_FOLDER "D:/Steamapp/steamapps/common/Skyrim Special Edition/MO2/mods/BetterEnchanting")
 #if(NOT EXISTS ${OUTPUT_FOLDER}) 
 #    set(OUTPUT_FOLDER "C:/Users/elain/AppData/Local/ModOrganizer/Skyrim Special Edition/mods/BetterSkyrim")
 #endif()
